@@ -1,0 +1,21 @@
+services:
+  wyoming-whisper:
+    build: .
+    container_name: wyoming-faster-whisper-rocm
+    restart: unless-stopped
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - video
+    security_opt:
+      - seccomp=unconfined
+    ipc: host
+    ports:
+      - "10300:10300"
+    volumes:
+      - ./data:/data
+    command:
+      - --model=medium.en
+      - --language=en
+      - --beam-size="5"
